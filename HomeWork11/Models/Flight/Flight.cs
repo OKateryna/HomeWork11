@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace HomeWork11.Models.Flight
 {
-    public class Flight
+    public class Flight : Entity
     {
-        public int Id { get; set; }
         public string Number { get; set; }
         public string PlaceDeparture { get; set; }
         public DateTime TimeDeparture { get; set; }

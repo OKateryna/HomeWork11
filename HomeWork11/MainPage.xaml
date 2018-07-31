@@ -15,85 +15,15 @@
 
         <Rectangle Fill="{StaticResource HeaderColor}" Grid.Row="0" />
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnStewardesses" Click="BtnStewardesses_Click">Stewardesses</Button>
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnPilots" Click="BtnPilots_Click">Pilots</Button>
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnCrews" Click="BtnCrews_Click">Crews</Button>
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnDepartures" Click="BtnDepartures_Click">Departures</Button>
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnPlanes" Click="BtnPlanes_Click">Planes</Button>
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnPlaneTypes" Click="BtnPlaneTypes_Click">Plane types</Button>
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnFlights" Click="BtnFlights_Click">Flights</Button>
-            <Button Style="{StaticResource SmallButton}" x:Name="BtnTickets" Click="BtnTickets_Click">Tickets</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnStewardesses" Click="BtnStewardesses_Click">Stewardesses</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnPilots" Click="BtnPilots_Click">Pilots</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnCrews" Click="BtnCrews_Click">Crews</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnDepartures" Click="BtnDepartures_Click">Departures</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnPlanes" Click="BtnPlanes_Click">Planes</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnPlaneTypes" Click="BtnPlaneTypes_Click">Plane types</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnFlights" Click="BtnFlights_Click">Flights</Button>
+            <Button Style="{StaticResource HeaderButton}" x:Name="BtnTickets" Click="BtnTickets_Click">Tickets</Button>
         </StackPanel>
         <Frame x:Name="ContentFrame" Margin="24" Grid.Row="1"/>
-        <!--<NavigationView PanePosition="Top" SelectionFollowsFocus="Enabled" >
-            <NavigationView.MenuItems>
-                <NavigationViewItem Content="Display" />
-                <NavigationViewItem Content="Magnifier"  />
-                <NavigationViewItem Content="Keyboard" />
-            </NavigationView.MenuItems>
-        </NavigationView>-->
-        <!--<VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{x:Bind NavView.CompactModeThresholdWidth}" />
-                    </VisualState.StateTriggers>
-
-                    <VisualState.Setters>
-                        <Setter Target="NavView.PaneDisplayMode" Value="Top"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
-        <NavigationView x:Name="NavView"
-                    ItemInvoked="NavView_ItemInvoked"
-                    IsSettingsVisible="False"
-                    Loaded="NavView_Loaded"
-                    BackRequested="NavView_BackRequested">
-
-            <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" x:Name="home">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE10F;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItemSeparator/>
-                <NavigationViewItemHeader Content="Main pages"/>
-                <NavigationViewItem Icon="AllApps" Content="Apps" x:Name="apps"/>
-                <NavigationViewItem Icon="Video" Content="Games" x:Name="games"/>
-                <NavigationViewItem Icon="Audio" Content="Music" x:Name="music"/>
-            </NavigationView.MenuItems>
-
-            <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="ASB" QueryIcon="Find"/>
-            </NavigationView.AutoSuggestBox>
-
-            <NavigationView.HeaderTemplate>
-                <DataTemplate>
-                    <Grid Margin="24,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}"
-                           FontSize="28"
-                           VerticalAlignment="Center"
-                           Text="Welcome"/>
-                        <CommandBar Grid.Column="1"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            DefaultLabelPosition="Right"
-                            Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
-                            <AppBarButton Label="Refresh" Icon="Refresh"/>
-                            <AppBarButton Label="Import" Icon="Import"/>
-                        </CommandBar>
-                    </Grid>
-                </DataTemplate>
-            </NavigationView.HeaderTemplate>
-
-            
-
-        </NavigationView>-->
     </Grid>
 </Page>

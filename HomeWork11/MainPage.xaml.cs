@@ -47,7 +47,7 @@ namespace HomeWork11
 
         private void BtnPilots_Click(object sender, RoutedEventArgs e)
         {
-
+            ContentFrame.Navigate(typeof(PilotsView));
         }
 
         private void BtnPlaneTypes_Click(object sender, RoutedEventArgs e)

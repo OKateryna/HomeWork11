@@ -1,46 +1,30 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Media.Core;
+using HomeWork11.Commands;
 using HomeWork11.Models.Stewardess;
 using HomeWork11.Services;
+using HomeWork11.Tools;
 
 namespace HomeWork11.ViewModels
 {
-    public class StewardessViewModel : ViewModelBase
+    public class StewardessViewModel : CrudViewModelBase<Stewardess, EditableStewardessFields>
     {
-        private readonly WebApiEntityService<Stewardess, EditableStewardessFields> _webApiEntityService;
-        
-        public ObservableCollection<Stewardess> Stewardesses { get; set; }
-        private Stewardess _selectedStewardess;
-
-        public Stewardess SelectedStewardess
+        public StewardessViewModel() : base ("stewardesses")
         {
-            get { return _selectedStewardess; }
-            set
-            {
-                if (_selectedStewardess != value)
-                {
-                    _selectedStewardess = value;
-                    OnPropertyChanged(nameof(SelectedStewardess));
-                }
-            }
+            CreateEntity.BirthDate = DateTime.Now.AddYears(-20);
         }
 
-        public StewardessViewModel()
+        protected override EditableStewardessFields ConvertToUpdateObject(Stewardess entity)
         {
-            _webApiEntityService = new WebApiEntityService<Stewardess, EditableStewardessFields>("stewardesses");
-            Stewardesses = new ObservableCollection<Stewardess>();
-            Initialization = Initialize();
-        }
-
-        public async Task Initialize()
-        {
-            var stewardesses = await _webApiEntityService.GetAll();
-            foreach (var stewardess in stewardesses)
+            return new EditableStewardessFields
             {
-                Stewardesses.Add(stewardess);
-            }
-            await Task.Delay(100);
+                BirthDate = entity.BirthDate,
+                SecondName = entity.SecondName,
+                FirstName = entity.FirstName
+            };
         }
     }
 }

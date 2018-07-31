@@ -4,12 +4,13 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HomeWork11.Models;
 using Newtonsoft.Json;
 
 namespace HomeWork11.Services
 {
     public class WebApiEntityService<T, T1> 
-        where T : class 
+        where T : Entity 
         where T1 : class 
     {
         private readonly HttpClient _client;
@@ -58,18 +59,18 @@ namespace HomeWork11.Services
             return entities;
         }
 
-        public async Task<int> Create(T1 createModelRequest)
+        public async Task<T> Create(T1 createModelRequest)
         {
             StringContent contentToCreate = new StringContent(JsonConvert.SerializeObject(createModelRequest), Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _client.PostAsync(_callUrl, contentToCreate);
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created)
             {
                 HttpContent responseContent = response.Content;
                 var json = await responseContent.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<int>(json);
+                return JsonConvert.DeserializeObject<T>(json);
             }
-            
+
             throw new AggregateException("Could not get a correct response from the server.");
         }
 
@@ -80,12 +81,10 @@ namespace HomeWork11.Services
             HttpResponseMessage response = await _client.PutAsync(_callUrl + $"/{id}", cotentToUpdate);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                HttpContent responseContent = response.Content;
-                var json = await responseContent.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<bool>(json);
+                return true;
             }
 
-            throw new AggregateException("Could not get a correct response from the server.");
+            return false;
         }
 
         public async Task<bool> Delete(int id)
@@ -93,12 +92,10 @@ namespace HomeWork11.Services
             HttpResponseMessage response = await _client.DeleteAsync(_callUrl + $"/{id}");
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                HttpContent responseContent = response.Content;
-                var json = await responseContent.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<bool>(json);
+                return true;
             }
-
-            throw new AggregateException("Could not get a correct response from the server.");
+            
+            return false;    
         }
     }
 }

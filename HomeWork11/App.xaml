@@ -4,16 +4,26 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:HomeWork11">
     <Application.Resources>
+        <Style TargetType="Button"
+               x:Key="HeaderButton"
+               BasedOn="{StaticResource SmallButton}">
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
 
         <Style TargetType="Button"
-            x:Key="SmallButton">
+               x:Key="LargeButton">
+            <Setter Property="Height" Value="60"></Setter>
+            <Setter Property="FontSize" Value="30px"></Setter>
+            <Setter Property="Margin" Value="0, 5, 0, 5"></Setter>
+        </Style>
 
+        <Style TargetType="Button"
+               x:Key="SmallButton">
             <Setter Property="FontSize" Value="18px"></Setter>
             <Setter Property="Margin" Value="10, 5, 10, 5"></Setter>
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
-            <Setter Property="Background" Value="Transparent"></Setter>
-            <Setter Property="Foreground" Value="White"></Setter>
         </Style>
 
         <Style x:Key="ListCaptionAltTextblockStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
@@ -23,6 +33,23 @@
 
         <Style x:Key="ListBodyTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource BodyTextBlockStyle}">
             <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}"/>
+        </Style>
+        
+        <Style x:Key="DetailsTextBox" TargetType="TextBox">
+            <Setter Property="Width" Value="300px"></Setter>
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+        
+        <Style x:Key="DetailsDatePicker" TargetType="DatePicker">
+            <Setter Property="Width" Value="300px"></Setter>
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+        </Style>
+        
+        <Style x:Key="ComboBoxPicker" TargetType="ComboBox">
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="Margin" Value="5"></Setter>
         </Style>
 
         <Color x:Key="LightBlue">#1781e3</Color>

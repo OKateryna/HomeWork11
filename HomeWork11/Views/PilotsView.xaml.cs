@@ -21,19 +21,19 @@ namespace HomeWork11.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class DeparturesView : Page
+    public sealed partial class PilotsView : Page
     {
-        public DeparturesView()
+        public PilotsView()
         {
             this.InitializeComponent();
-            ViewModel = new DepartureViewModel();
+            this.ViewModel = new PilotViewModel();
         }
 
-        private async void DeparturesView_OnLoading(FrameworkElement sender, object args)
+        private async void PilotsView_OnLoading(FrameworkElement sender, object args)
         {
             await ViewModel.Initialization;
         }
 
-        public DepartureViewModel ViewModel { get; set; }
+        public PilotViewModel ViewModel { get; set; }
     }
 }

@@ -2,9 +2,8 @@
 
 namespace HomeWork11.Models.Pilot
 {
-    public class Pilot
+    public class Pilot : Entity
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string SecondName { get; set; }
         public DateTime BirthDate { get; set; }

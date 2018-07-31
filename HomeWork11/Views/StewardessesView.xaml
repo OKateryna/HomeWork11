@@ -2,15 +2,19 @@
     x:Class="HomeWork11.Views.StewardessesView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:HomeWork11.Views"
-    xmlns:viewmodels="using:HomeWork11.ViewModels"
     xmlns:dataModels="using:HomeWork11.Models.Stewardess"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tools="using:HomeWork11.Tools"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loading="StewardessesView_OnLoading">
+    Loading="StewardessesView_OnLoading"
+    x:Name="HolderPage">
     <Page.Resources>
+        <tools:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <tools:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <tools:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
+
         <DataTemplate x:Key="StewardessListViewItemTemplate" x:DataType="dataModels:Stewardess">
             <Grid Margin="0,11,0,13">
                 <Grid.RowDefinitions>
@@ -18,7 +22,12 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
                     <TextBlock Text="{x:Bind FirstName}" Style="{ThemeResource BaseTextBlockStyle}" Margin="0, 0, 5, 0"/>
                     <TextBlock Text="{x:Bind SecondName}" Style="{ThemeResource BaseTextBlockStyle}" />
                 </StackPanel>
@@ -26,63 +35,168 @@
                 <TextBlock
                     Text="{x:Bind BirthDate}"
                     Grid.Row="1"
+                    Grid.Column="0"
                     MaxLines="1"
                     Style="{ThemeResource ListBodyTextBlockStyle}" />
+                <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource SmallButton}" Command="{Binding ElementName=HolderPage, Path=ViewModel.DeleteCommand}" CommandParameter="{x:Bind Id}">Delete</Button>
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DetailContentTemplate" x:DataType="dataModels:Stewardess">
+        <DataTemplate x:Key="StewardessContentTemplate" x:DataType="dataModels:Stewardess">
             <StackPanel>
-                <TextBlock
-                    Margin="0,8"
-                    Style="{ThemeResource TitleTextBlockStyle}"
-                    HorizontalAlignment="Left"
-                    Text="{x:Bind FirstName}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock
-                    Margin="0,9"
-                    HorizontalAlignment="Left"
-                    MaxWidth="560"
-                    Style="{ThemeResource BodyTextBlockStyle}"
-                    Text="{x:Bind SecondName}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="0,8"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="First name:"/>
+
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind FirstName, Mode=TwoWay}"/>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,8"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="Second name:"/>
+
+                    <TextBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind SecondName, Mode=TwoWay}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="0,8"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Text="Birth date:"/>
+
+                    <DatePicker
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Style="{StaticResource DetailsDatePicker}"
+                        Date="{Binding BirthDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
+
+                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource LargeButton}" HorizontalAlignment="Center" Command="{Binding ElementName=HolderPage, Path=ViewModel.UpdateCommand}" CommandParameter="{x:Bind}">Update</Button>
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StewardessCreateTemplate" x:DataType="dataModels:EditableStewardessFields">
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="0,8"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="First name:"/>
+
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind FirstName, Mode=TwoWay}"/>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="0,8"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Text="Second name:"/>
+
+                    <TextBox
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind SecondName, Mode=TwoWay}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="0,8"
+                        Style="{ThemeResource TitleTextBlockStyle}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Text="Birth date:"/>
+
+                    <DatePicker Grid.Row="2"
+                        Grid.Column="1"
+                        Style="{StaticResource DetailsDatePicker}"
+                        Date="{Binding BirthDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"/>
+                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource LargeButton}" HorizontalAlignment="Center" Command="{Binding ElementName=HolderPage, Path=ViewModel.CreateCommand}">Create</Button>
+                </Grid>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
 
     <Grid>
-        <!--<VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
-                <VisualState x:Name="DefaultState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="720" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-
-                <VisualState x:Name="NarrowState">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-
-                    <VisualState.Setters>
-                        <Setter Target="MasterColumn.Width" Value="*" />
-                        <Setter Target="DetailColumn.Width" Value="0" />
-                        <Setter Target="MasterListView.SelectionMode" Value="None" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MasterColumn" Width="320" />
-            <ColumnDefinition x:Name="DetailColumn" Width="*" />
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <TextBlock 
+            Grid.Row="0"
+            Margin="0,8"
+            Style="{ThemeResource TitleTextBlockStyle}"
+            FontSize="30"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center" Text="Stewardesses"/>
+
+        <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource LargeButton}" Margin="10" HorizontalAlignment="Center" Command="{x:Bind ViewModel.CreateModeCommand}">Create</Button>
 
         <ListView
-            x:Name="MasterListView"
+            Grid.Row="2"
+            Grid.Column="0"
             ItemContainerTransitions="{x:Null}"
             ItemTemplate="{StaticResource StewardessListViewItemTemplate}"
             IsItemClickEnabled="True"
-            ItemsSource="{x:Bind ViewModel.Stewardesses}"
-            SelectedItem="{x:Bind ViewModel.SelectedStewardess, Mode=TwoWay}">
+            ItemsSource="{x:Bind ViewModel.Entities}"
+            SelectedItem="{x:Bind ViewModel.SelectedEntity, Mode=TwoWay}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -91,18 +205,27 @@
         </ListView>
 
         <ContentPresenter
-            x:Name="DetailContentPresenter"
+            Visibility="{x:Bind ViewModel.SelectedEntity, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}"
+            Grid.Row="0"
             Grid.Column="1"
-            Grid.RowSpan="2"
+            Grid.RowSpan="3"
             BorderThickness="1,0,0,0"
             Padding="24,0"
             BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
-            Content="{x:Bind ViewModel.SelectedStewardess, Mode=OneWay}"
-            ContentTemplate="{StaticResource DetailContentTemplate}">
-            <!--<ContentPresenter.ContentTransitions>
-                 Empty by default. See MasterListView_ItemClick 
-                <TransitionCollection />
-            </ContentPresenter.ContentTransitions>-->
+            Content="{x:Bind ViewModel.SelectedEntity, Mode=OneWay}"
+            ContentTemplate="{StaticResource StewardessContentTemplate}">
+        </ContentPresenter>
+
+        <ContentPresenter
+            Visibility="{x:Bind ViewModel.CreateMode, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"
+            Grid.Row="0"
+            Grid.Column="1"
+            Grid.RowSpan="3"
+            BorderThickness="1,0,0,0"
+            Padding="24,0"
+            BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
+            Content="{x:Bind ViewModel.CreateEntity, Mode=OneWay}"
+            ContentTemplate="{StaticResource StewardessCreateTemplate}">
         </ContentPresenter>
     </Grid>
 </Page>

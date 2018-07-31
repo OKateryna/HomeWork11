@@ -1,21 +1,21 @@
 ﻿<Page
-    x:Class="HomeWork11.Views.DeparturesView"
+    x:Class="HomeWork11.Views.PilotsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:dataModels="using:HomeWork11.Models.Departure"
+    xmlns:dataModels="using:HomeWork11.Models.Pilot"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tools="using:HomeWork11.Tools"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loading="DeparturesView_OnLoading"
+    Loading="PilotsView_OnLoading"
     x:Name="HolderPage">
     <Page.Resources>
         <tools:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         <tools:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <tools:DateTimeToDateTimeOffsetConverter x:Key="DateTimeToDateTimeOffsetConverter"/>
 
-        <DataTemplate x:Key="DepartureListViewItemTemplate" x:DataType="dataModels:Departure">
+        <DataTemplate x:Key="PilotListViewItemTemplate" x:DataType="dataModels:Pilot">
             <Grid Margin="0,11,0,13">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -25,31 +25,27 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                    <TextBlock Text="{x:Bind Crew.Name}" Style="{ThemeResource BaseTextBlockStyle}" />
-                    <TextBlock Text="{x:Bind Flight.Number}" Style="{ThemeResource BaseTextBlockStyle}" Margin="0, 0, 5, 0"/>
-                    <TextBlock Text="{x:Bind Plane.PlaneName}" Style="{ThemeResource BaseTextBlockStyle}" />
-                    <TextBlock Text="{x:Bind Plane.PlaneType.PlaneModel}" Style="{ThemeResource BaseTextBlockStyle}" />
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="{x:Bind FirstName}" Style="{ThemeResource BaseTextBlockStyle}" Margin="0, 0, 5, 0"/>
+                    <TextBlock Text="{x:Bind SecondName}" Style="{ThemeResource BaseTextBlockStyle}" />
                 </StackPanel>
-                
+
                 <TextBlock
-                    Text="{x:Bind DepartureDate}"
-                    Grid.Row="0"
-                    Grid.Column="1"
+                    Text="{x:Bind BirthDate}"
+                    Grid.Row="1"
+                    Grid.Column="0"
                     MaxLines="1"
                     Style="{ThemeResource ListBodyTextBlockStyle}" />
-                <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Style="{StaticResource SmallButton}" Command="{Binding ElementName=HolderPage, Path=ViewModel.DeleteCommand}" CommandParameter="{x:Bind Id}" IsEnabled="{Binding ElementName=HolderPage, Path=ViewModel.IsLoaded}">Delete</Button>
+                <Button Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource SmallButton}" Command="{Binding ElementName=HolderPage, Path=ViewModel.DeleteCommand}" CommandParameter="{x:Bind Id}">Delete</Button>
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DepartureContentTemplate" x:DataType="dataModels:Departure">
+        <DataTemplate x:Key="PilotContentTemplate" x:DataType="dataModels:Pilot">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -67,17 +63,13 @@
                         Style="{ThemeResource TitleTextBlockStyle}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="Crew name:"/>
+                        Text="First name:"/>
 
-                    <ComboBox
+                    <TextBox
                         Grid.Row="0"
                         Grid.Column="1"
-                        DisplayMemberPath="Name"
-                        Style="{StaticResource ComboBoxPicker}"
-                        SelectedValuePath="Id"
-                        SelectedValue="{x:Bind Crew.Id, Mode=TwoWay}"
-                        SelectedItem="{x:Bind Crew, Mode=TwoWay}"
-                        ItemsSource="{Binding ElementName=HolderPage, Path=ViewModel.Crews, Mode=OneWay}" />
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind FirstName, Mode=TwoWay}"/>
 
                     <TextBlock
                         Grid.Row="1"
@@ -86,62 +78,38 @@
                         Style="{ThemeResource TitleTextBlockStyle}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="Flight number:"/>
+                        Text="Second name:"/>
 
-                    <ComboBox
+                    <TextBox
                         Grid.Row="1"
                         Grid.Column="1"
-                        DisplayMemberPath="Number"
-                        Style="{StaticResource ComboBoxPicker}"
-                        SelectedValuePath="Id"
-                        SelectedValue="{x:Bind Flight.Id, Mode=TwoWay}"
-                        SelectedItem="{x:Bind Flight, Mode=TwoWay}"
-                        ItemsSource="{Binding ElementName=HolderPage, Path=ViewModel.Flights, Mode=OneWay}" />
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind SecondName, Mode=TwoWay}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
                         Margin="0,8"
                         Style="{ThemeResource TitleTextBlockStyle}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="Plane:"/>
-
-                    <ComboBox
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        DisplayMemberPath="PlaneName"
-                        Style="{StaticResource ComboBoxPicker}"
-                        SelectedValuePath="Id"
-                        SelectedValue="{x:Bind Plane.Id, Mode=TwoWay}"
-                        SelectedItem="{x:Bind Plane, Mode=TwoWay}"
-                        ItemsSource="{Binding ElementName=HolderPage, Path=ViewModel.Planes, Mode=OneWay}" />
-
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Margin="0,8"
-                        Style="{ThemeResource TitleTextBlockStyle}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
-                        Text="Departure date:"/>
+                        Text="Birth date:"/>
 
                     <DatePicker
-                        Grid.Row="3"
+                        Grid.Row="2"
                         Grid.Column="1"
                         Style="{StaticResource DetailsDatePicker}"
-                        Date="{Binding DepartureDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
+                        Date="{Binding BirthDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
 
-                    <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource LargeButton}" HorizontalAlignment="Center" Command="{Binding ElementName=HolderPage, Path=ViewModel.UpdateCommand}" CommandParameter="{x:Bind}" IsEnabled="{Binding ElementName=HolderPage, Path=ViewModel.IsLoaded}">Update</Button>
+                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource LargeButton}" HorizontalAlignment="Center" Command="{Binding ElementName=HolderPage, Path=ViewModel.UpdateCommand}" CommandParameter="{x:Bind}">Update</Button>
                 </Grid>
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="DepartureCreateTemplate" x:DataType="dataModels:EditableDepartureFields">
+        <DataTemplate x:Key="PilotCreateTemplate" x:DataType="dataModels:EditablePilotFields">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -159,16 +127,13 @@
                         Style="{ThemeResource TitleTextBlockStyle}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="Crew name:"/>
+                        Text="First name:"/>
 
-                    <ComboBox
+                    <TextBox
                         Grid.Row="0"
                         Grid.Column="1"
-                        DisplayMemberPath="Name"
-                        Style="{StaticResource ComboBoxPicker}"
-                        SelectedValuePath="Id"
-                        SelectedValue="{x:Bind CrewId, Mode=TwoWay}"
-                        ItemsSource="{Binding ElementName=HolderPage, Path=ViewModel.Crews, Mode=OneWay}" />
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind FirstName, Mode=TwoWay}"/>
 
                     <TextBlock
                         Grid.Row="1"
@@ -177,51 +142,28 @@
                         Style="{ThemeResource TitleTextBlockStyle}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        Text="Flight number:"/>
+                        Text="Second name:"/>
 
-                    <ComboBox
+                    <TextBox
                         Grid.Row="1"
                         Grid.Column="1"
-                        DisplayMemberPath="Number"
-                        Style="{StaticResource ComboBoxPicker}"
-                        SelectedValuePath="Id"
-                        SelectedValue="{x:Bind FlightId, Mode=TwoWay}"
-                        ItemsSource="{Binding ElementName=HolderPage, Path=ViewModel.Flights, Mode=OneWay}" />
+                        Style="{StaticResource DetailsTextBox}"
+                        Text="{x:Bind SecondName, Mode=TwoWay}" />
 
                     <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
                         Margin="0,8"
                         Style="{ThemeResource TitleTextBlockStyle}"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Text="Plane:"/>
-
-                    <ComboBox
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        DisplayMemberPath="PlaneName"
-                        Style="{StaticResource ComboBoxPicker}"
-                        SelectedValuePath="Id"
-                        SelectedValue="{x:Bind PlaneId, Mode=TwoWay}"
-                        ItemsSource="{Binding ElementName=HolderPage, Path=ViewModel.Planes, Mode=OneWay}" />
-
-                    <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Margin="0,8"
-                        Style="{ThemeResource TitleTextBlockStyle}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
-                        Text="Departure date:"/>
+                        Text="Birth date:"/>
 
-                    <DatePicker
-                        Grid.Row="3"
+                    <DatePicker Grid.Row="2"
                         Grid.Column="1"
                         Style="{StaticResource DetailsDatePicker}"
-                        Date="{x:Bind DepartureDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"></DatePicker>
-
-                    <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource LargeButton}" HorizontalAlignment="Center" Command="{Binding ElementName=HolderPage, Path=ViewModel.CreateCommand}" IsEnabled="{Binding ElementName=HolderPage, Path=ViewModel.IsLoaded}">Create</Button>
+                        Date="{Binding BirthDate, Converter={StaticResource DateTimeToDateTimeOffsetConverter}, Mode=TwoWay}"/>
+                    <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource LargeButton}" HorizontalAlignment="Center" Command="{Binding ElementName=HolderPage, Path=ViewModel.CreateCommand}">Create</Button>
                 </Grid>
             </StackPanel>
         </DataTemplate>
@@ -234,24 +176,24 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="320" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TextBlock
+        <TextBlock 
             Grid.Row="0"
             Margin="0,8"
             Style="{ThemeResource TitleTextBlockStyle}"
             FontSize="30"
             VerticalAlignment="Center"
-            HorizontalAlignment="Center" Text="Departures"/>
+            HorizontalAlignment="Center" Text="Pilots"/>
 
-        <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource LargeButton}" Margin="10" HorizontalAlignment="Center" Command="{x:Bind ViewModel.CreateModeCommand}" IsEnabled="{Binding ElementName=HolderPage, Path=ViewModel.IsLoaded, UpdateSourceTrigger=PropertyChanged}">Create</Button>
+        <Button Grid.Row="1" Grid.Column="0" Style="{StaticResource LargeButton}" Margin="10" HorizontalAlignment="Center" Command="{x:Bind ViewModel.CreateModeCommand}">Create</Button>
 
         <ListView
             Grid.Row="2"
             Grid.Column="0"
             ItemContainerTransitions="{x:Null}"
-            ItemTemplate="{StaticResource DepartureListViewItemTemplate}"
+            ItemTemplate="{StaticResource PilotListViewItemTemplate}"
             IsItemClickEnabled="True"
             ItemsSource="{x:Bind ViewModel.Entities}"
             SelectedItem="{x:Bind ViewModel.SelectedEntity, Mode=TwoWay}">
@@ -271,7 +213,7 @@
             Padding="24,0"
             BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
             Content="{x:Bind ViewModel.SelectedEntity, Mode=OneWay}"
-            ContentTemplate="{StaticResource DepartureContentTemplate}">
+            ContentTemplate="{StaticResource PilotContentTemplate}">
         </ContentPresenter>
 
         <ContentPresenter
@@ -283,7 +225,7 @@
             Padding="24,0"
             BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}"
             Content="{x:Bind ViewModel.CreateEntity, Mode=OneWay}"
-            ContentTemplate="{StaticResource DepartureCreateTemplate}">
+            ContentTemplate="{StaticResource PilotCreateTemplate}">
         </ContentPresenter>
     </Grid>
 </Page>
